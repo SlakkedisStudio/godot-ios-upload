@@ -1,7 +1,6 @@
 
 name: 'Godot iOS Upload'
 description: 'Godot Engine 3.x and 4.x for iOS export and Testflight upload'
-author: 'Simon Dalvai @dulvui'
 branding:
   color: white
   icon: upload-cloud
@@ -14,7 +13,7 @@ inputs:
   godot-version:
     description: 'Godot Engine version'
     required: false
-    default: '4.2'
+    default: '4.2.2'
   project-name:
     description: 'Project name used for xarchive building'
     required: true
@@ -39,7 +38,7 @@ runs:
     
     - name: Cache Godot files
       id: cache-godot
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: |
           Godot.app
@@ -50,10 +49,10 @@ runs:
       shell: bash
       if: steps.cache-godot.outputs.cache-hit != 'true'
       run: |
-        wget -q https://downloads.tuxfamily.org/godotengine/${{ inputs.godot-version }}/Godot_v${{ inputs.godot-version }}-stable_macos.universal.zip
-        wget -q https://downloads.tuxfamily.org/godotengine/${{ inputs.godot-version }}/Godot_v${{ inputs.godot-version }}-stable_export_templates.tpz
-        unzip Godot_v${{ inputs.godot-version }}-stable_macos.universal.zip
-        unzip Godot_v${{ inputs.godot-version }}-stable_export_templates.tpz
+        wget -q https://spine-godot.s3.eu-central-1.amazonaws.com/4.2/4.2.2-stable/godot-editor-macos.zip
+        wget -q https://spine-godot.s3.eu-central-1.amazonaws.com/4.2/4.2.2-stable/spine-godot-templates-4.2-4.2.2-stable.tpz
+        unzip godot-editor-macos.zip
+        unzip spine-godot-templates-4.2-4.2.2-stable.tpz -d templates
         mkdir -p ~/Library/Application\ Support/Godot/export_templates/${{ inputs.godot-version }}.stable
         mv templates/* ~/Library/Application\ Support/Godot/export_templates/${{ inputs.godot-version }}.stable
 
