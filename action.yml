@@ -81,7 +81,6 @@ runs:
       run: |
         set -eo pipefail
         xcodebuild clean archive \
-# adding this workspace here cause its now using a cocoapods setup for admob
           -workspace ${{inputs.working-directory}}/${{inputs.project-name}}.xcworkspace \
           -scheme ${{ inputs.project-name }} \
           -configuration "Release" \
