@@ -90,7 +90,7 @@ runs:
       run: |
         set -eo pipefail
         xcodebuild clean archive \
-          -workspace ${{inputs.working-directory}}/${{inputs.project-name}}.xcworkspace \
+          -workspace ${{inputs.project-name}}.xcworkspace \
           -scheme ${{ inputs.project-name }} \
           -configuration "Release" \
           -sdk iphoneos \
