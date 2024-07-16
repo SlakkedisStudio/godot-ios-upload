@@ -76,6 +76,12 @@ runs:
         ./update_and_install.sh
 #TODO: might need to still set the targets manually via bash script
 
+
+    - name: Before running codebuild
+      shell: bash
+      run: |
+        echo "THIS HAPPENS BEFORE"
+
     - name: Build the xarchive using .xcworkspace
       shell: bash
       run: |
@@ -87,8 +93,10 @@ runs:
           -sdk iphoneos \
           -archivePath "$PWD/build/${{ inputs.project-name }}.xcarchive" \
           -destination "generic/platform=iOS,name=Any iOS Device" \
-          -allowProvisioningUpdates \
           OTHER_CODE_SIGN_FLAGS="--keychain $RUNNER_TEMP/app-signing.keychain-db" \
+          CODE_SIGN_STYLE=Manual \
+          PROVISIONING_PROFILE=$PP_UUID \
+          CODE_SIGN_IDENTITY="Apple Distribution"
 
     - name: Export .ipa
       shell: bash
