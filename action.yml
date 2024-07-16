@@ -69,21 +69,20 @@ runs:
       shell: bash
       run: xcodebuild -resolvePackageDependencies
 
-    # - name: Run admob pod update
-    #   shell: bash
-    #   run: |
-    #     cd ${{inputs.working-directory}}/ios/plugins/poing-godot-admob/scripts
-    #     chmod +x update_and_install.sh
-    #     ./update_and_install.sh
+    - name: Run admob pod update
+      shell: bash
+      run: |
+        cd ${{inputs.working-directory}}/ios/plugins/poing-godot-admob/scripts
+        chmod +x update_and_install.sh
+        ./update_and_install.sh
 
-
-#TODO: might need to still set the targets manually via bash script
 
     - name: Build the xarchive using .xcworkspace
       shell: bash
       run: |
         set -eo pipefail
         xcodebuild clean archive \
+          -workspace ${{inputs.project-name}}.xcworkspace \
           -scheme ${{ inputs.project-name }} \
           -configuration "Release" \
           -sdk iphoneos \
