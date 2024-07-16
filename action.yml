@@ -72,12 +72,9 @@ runs:
     - name: Run admob pod update
       shell: bash
       run: |
-        - name: Run admob pod update
-          shell: bash
-          run: |
-            cd ${{inputs.working-directory}}/ios/plugins/poing-godot-admob/scripts
-            chmod +x update_and_install.sh
-            ./update_and_install.sh
+        cd ${{inputs.working-directory}}/ios/plugins/poing-godot-admob/scripts
+        chmod +x update_and_install.sh
+        ./update_and_install.sh
 
 
 #TODO: might need to still set the targets manually via bash script
