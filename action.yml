@@ -83,6 +83,7 @@ runs:
       shell: bash
       run: |
         echo "THIS HAPPENS BEFORE"
+        ls -la ${{inputs.working-directory}}
 
     - name: Build the xarchive using .xcworkspace
       shell: bash
