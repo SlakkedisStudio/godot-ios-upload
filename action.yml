@@ -65,32 +65,25 @@ runs:
       run: echo "PP_UUID=$(grep -a -A 1 'UUID' ${{ inputs.provision-profile-path }} | grep string | sed -e "s|<string>||" -e "s|</string>||" | tr -d '\t')" >> $GITHUB_ENV
 
 # Might not need this as we're using cocoapods now
-    # - name: Resolve package dependencies
-    #   shell: bash
-    #   run: xcodebuild -resolvePackageDependencies
-
-    - name: Run admob pod update
+    - name: Resolve package dependencies
       shell: bash
-      run: |
-        cd ${{inputs.working-directory}}/ios/plugins/poing-godot-admob/scripts
-        chmod +x update_and_install.sh
-        ./update_and_install.sh
+      run: xcodebuild -resolvePackageDependencies
+
+    # - name: Run admob pod update
+    #   shell: bash
+    #   run: |
+    #     cd ${{inputs.working-directory}}/ios/plugins/poing-godot-admob/scripts
+    #     chmod +x update_and_install.sh
+    #     ./update_and_install.sh
 
 
 #TODO: might need to still set the targets manually via bash script
-
-    - name: Before running codebuild
-      shell: bash
-      run: |
-        echo "THIS HAPPENS BEFORE"
-        ls -la ${{inputs.working-directory}}
 
     - name: Build the xarchive using .xcworkspace
       shell: bash
       run: |
         set -eo pipefail
         xcodebuild clean archive \
-          -workspace ${{inputs.project-name}}.xcworkspace \
           -scheme ${{ inputs.project-name }} \
           -configuration "Release" \
           -sdk iphoneos \
