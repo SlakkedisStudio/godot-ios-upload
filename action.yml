@@ -26,6 +26,9 @@ inputs:
   apple-id-username:
     description: 'Apple ID username'
     required: true
+  team-id:
+    description: 'Apple Developer Team ID'
+    required: true
 
 
 runs:
@@ -92,6 +95,7 @@ runs:
           CODE_SIGN_STYLE=Manual \
           PROVISIONING_PROFILE=$PP_UUID \
           CODE_SIGN_IDENTITY="iOS Distribution"
+          DEVELOPMENT_TEAM="${{ inputs.team-id }}"
 
     - name: Export .ipa
       shell: bash
@@ -102,6 +106,7 @@ runs:
           -exportPath $PWD/build \
           -allowProvisioningUpdates \
           -exportArchive
+          DEVELOPMENT_TEAM="${{ inputs.team-id }}"
 
     - name: Publish the App on TestFlight
       shell: bash
