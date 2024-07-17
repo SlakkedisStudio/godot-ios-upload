@@ -65,9 +65,9 @@ runs:
       run: echo "PP_UUID=$(grep -a -A 1 'UUID' ${{ inputs.provision-profile-path }} | grep string | sed -e "s|<string>||" -e "s|</string>||" | tr -d '\t')" >> $GITHUB_ENV
 
 # Might not need this as we're using cocoapods now
-    - name: Resolve package dependencies
-      shell: bash
-      run: xcodebuild -resolvePackageDependencies
+    # - name: Resolve package dependencies
+    #   shell: bash
+    #   run: xcodebuild -resolvePackageDependencies
 
     - name: Run admob pod update
       shell: bash
