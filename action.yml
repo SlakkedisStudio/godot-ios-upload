@@ -112,7 +112,7 @@ runs:
           -destination "generic/platform=iOS,name=Any iOS Device" \
           CODE_SIGN_STYLE=Automatic \
           CODE_SIGN_IDENTITY="iOS Distribution" \
-          DEVELOPMENT_TEAM="${{ secrets.TEAM_ID }}"
+          DEVELOPMENT_TEAM="${{ inputs.team-id }}"
 
     - name: Export .ipa
       shell: bash
@@ -122,7 +122,7 @@ runs:
           -exportOptionsPlist exportOptions.plist \
           -exportPath $PWD/build \
           CODE_SIGN_STYLE=Automatic \
-          DEVELOPMENT_TEAM="${{ secrets.TEAM_ID }}" \
+          DEVELOPMENT_TEAM="${{ inputs.team-id }}" \
           -exportArchive
 
     - name: Publish the App on TestFlight
