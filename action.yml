@@ -68,15 +68,15 @@ runs:
       run: echo "PP_UUID=$(grep -a -A 1 'UUID' ${{ inputs.provision-profile-path }} | grep string | sed -e "s|<string>||" -e "s|</string>||" | tr -d '\t')" >> $GITHUB_ENV
 
     - name: Verify Provisioning Profile Placement and UUID
-        run: |
-          ls -la ~/Library/MobileDevice/Provisioning\ Profiles/
-          if [ -s ~/Library/MobileDevice/Provisioning\ Profiles/build_pp.mobileprovision ]; then
-            echo "Provisioning profile is in place and not empty."
-          else
-            echo "Provisioning profile is missing or empty."
-            exit 1
-          fi
-          echo $PP_UUID
+      run: |
+        ls -la ~/Library/MobileDevice/Provisioning\ Profiles/
+        if [ -s ~/Library/MobileDevice/Provisioning\ Profiles/build_pp.mobileprovision ]; then
+          echo "Provisioning profile is in place and not empty."
+        else
+          echo "Provisioning profile is missing or empty."
+          exit 1
+        fi
+        echo $PP_UUID
 
 # Might not need this as we're using cocoapods now
     # - name: Resolve package dependencies
