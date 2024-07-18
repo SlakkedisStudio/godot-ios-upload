@@ -48,6 +48,12 @@ runs:
           /Users/runner/Library/Application Support/Godot/
         key: ${{ runner.os }}-godot-${{ inputs.godot-version }}
 
+    - name: Log in to Apple Developer
+      run: |
+        xcrun altool --list-providers \
+          -u ${{ inputs.apple-id-username }} \
+          -p ${{ inputs.apple-id-password }}
+
     - name: Download and configure Godot Engine linux server and templates
       shell: bash
       if: steps.cache-godot.outputs.cache-hit != 'true'
