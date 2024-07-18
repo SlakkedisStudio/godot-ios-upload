@@ -101,16 +101,16 @@ runs:
       shell: bash
       run: |
         set -eo pipefail
-        xcodebuild -exportArchive \
-          -archivePath "$PWD/build/${{ inputs.project-name }}.xcarchive"
+        xcodebuild -archivePath "$PWD/build/${{ inputs.project-name }}.xcarchive" \
           -exportOptionsPlist exportOptions.plist \
           -exportPath $PWD/build \
           -allowProvisioningUpdates \
+          -exportArchive
+          DEVELOPMENT_TEAM="${{ inputs.team-id }}"
           OTHER_CODE_SIGN_FLAGS="--keychain $RUNNER_TEMP/app-signing.keychain-db" \
           CODE_SIGN_STYLE=Manual \
           PROVISIONING_PROFILE=$PP_UUID \
-          CODE_SIGN_IDENTITY="iOS Distribution" \
-          DEVELOPMENT_TEAM="${{ inputs.team-id }}" \
+          CODE_SIGN_IDENTITY="iOS Distribution"
 
     - name: Publish the App on TestFlight
       shell: bash
