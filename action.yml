@@ -49,6 +49,7 @@ runs:
         key: ${{ runner.os }}-godot-${{ inputs.godot-version }}
 
     - name: Log in to Apple Developer
+      shell: bash
       run: |
         xcrun altool --list-providers \
           -u ${{ inputs.apple-id-username }} \
