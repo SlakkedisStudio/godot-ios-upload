@@ -110,6 +110,7 @@ runs:
           -sdk iphoneos \
           -archivePath "$PWD/build/${{ inputs.project-name }}.xcarchive" \
           -destination "generic/platform=iOS,name=Any iOS Device" \
+          -allowProvisioningUpdates \
           CODE_SIGN_STYLE=Automatic \
           CODE_SIGN_IDENTITY="iOS Distribution" \
           DEVELOPMENT_TEAM="${{ inputs.team-id }}"
@@ -121,6 +122,7 @@ runs:
         xcodebuild -archivePath "$PWD/build/${{ inputs.project-name }}.xcarchive" \
           -exportOptionsPlist exportOptions.plist \
           -exportPath $PWD/build \
+          -allowProvisioningUpdates \
           CODE_SIGN_STYLE=Automatic \
           DEVELOPMENT_TEAM="${{ inputs.team-id }}" \
           -exportArchive
