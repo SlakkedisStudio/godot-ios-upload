@@ -104,17 +104,15 @@ runs:
       run: |
         set -eo pipefail
         xcodebuild clean archive \
-          -workspace ${{inputs.project-name}}.xcworkspace \
+          -workspace ${{ inputs.project-name }}.xcworkspace \
           -scheme ${{ inputs.project-name }} \
           -configuration "Release" \
           -sdk iphoneos \
           -archivePath "$PWD/build/${{ inputs.project-name }}.xcarchive" \
           -destination "generic/platform=iOS,name=Any iOS Device" \
-          OTHER_CODE_SIGN_FLAGS="--keychain $RUNNER_TEMP/app-signing.keychain-db" \
-          CODE_SIGN_STYLE=Manual \
-          PROVISIONING_PROFILE=$PP_UUID \
-          CODE_SIGN_IDENTITY="iOS Distribution"
-          DEVELOPMENT_TEAM="${{ inputs.team-id }}"
+          CODE_SIGN_STYLE=Automatic \
+          CODE_SIGN_IDENTITY="iOS Distribution" \
+          DEVELOPMENT_TEAM="${{ secrets.TEAM_ID }}"
 
     - name: Export .ipa
       shell: bash
@@ -123,14 +121,9 @@ runs:
         xcodebuild -archivePath "$PWD/build/${{ inputs.project-name }}.xcarchive" \
           -exportOptionsPlist exportOptions.plist \
           -exportPath $PWD/build \
-          -allowProvisioningUpdates \
-          -exportArchive \
-          -verbose \
-          DEVELOPMENT_TEAM="${{ inputs.team-id }}" \
-          OTHER_CODE_SIGN_FLAGS="--keychain $RUNNER_TEMP/app-signing.keychain-db" \
-          CODE_SIGN_STYLE=Manual \
-          PROVISIONING_PROFILE=$PP_UUID \
-          CODE_SIGN_IDENTITY="iOS Distribution"
+          CODE_SIGN_STYLE=Automatic \
+          DEVELOPMENT_TEAM="${{ secrets.TEAM_ID }}" \
+          -exportArchive
 
     - name: Publish the App on TestFlight
       shell: bash
