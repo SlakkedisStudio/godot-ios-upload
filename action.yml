@@ -76,17 +76,7 @@ runs:
 
    
 
-    # - name: Verify Provisioning Profile Placement and UUID
-    #   shell: bash
-    #   run: |
-    #     ls -la ~/Library/MobileDevice/Provisioning\ Profiles/
-    #     if [ -s ~/Library/MobileDevice/Provisioning\ Profiles/build_pp.mobileprovision ]; then
-    #       echo "Provisioning profile is in place and not empty."
-    #     else
-    #       echo "Provisioning profile is missing or empty."
-    #       exit 1
-    #     fi
-    #     chmod +r ~/Library/MobileDevice/Provisioning\ Profiles/build_pp.mobileprovision
+   
 
 # Might not need this as we're using cocoapods now
     # - name: Resolve package dependencies
@@ -116,6 +106,12 @@ runs:
           CODE_SIGN_STYLE=Automatic \
           CODE_SIGN_IDENTITY="iOS Distribution" \
           DEVELOPMENT_TEAM="${{ inputs.team-id }}"
+
+    - name: Verify Provisioning Profiles
+      shell: bash
+      run: |
+        ls -la ~/Library/MobileDevice/Provisioning\ Profiles/
+       
 
     - name: Export .ipa
       shell: bash
