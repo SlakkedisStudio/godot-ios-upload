@@ -55,9 +55,9 @@ runs:
           -u ${{ inputs.apple-id-username }} \
           -p ${{ inputs.apple-id-password }}
 
-    # - name: Install Fastlane
-    #   shell: bash
-    #   run: gem install fastlane -NV
+    - name: Install Fastlane
+      shell: bash
+      run: gem install fastlane -NV
 
     - name: Download and configure Godot Engine linux server and templates
       shell: bash
@@ -91,41 +91,51 @@ runs:
         ./update_and_install.sh
 
 
-    - name: Build the xarchive using .xcworkspace
-      shell: bash
-      run: |
-        set -eo pipefail
-        xcodebuild clean archive \
-          -workspace ${{ inputs.project-name }}.xcworkspace \
-          -scheme ${{ inputs.project-name }} \
-          -configuration "Release" \
-          -sdk iphoneos \
-          -archivePath "$PWD/build/${{ inputs.project-name }}.xcarchive" \
-          -destination "generic/platform=iOS,name=Any iOS Device" \
-          -allowProvisioningUpdates \
-          CODE_SIGN_STYLE=Automatic \
-          CODE_SIGNING_ALLOWED=NO \
-          CODE_SIGN_IDENTITY="iOS Distribution" \
-          DEVELOPMENT_TEAM="${{ inputs.team-id }}"
+    # - name: Build the xarchive using .xcworkspace
+    #   shell: bash
+    #   run: |
+    #     set -eo pipefail
+    #     xcodebuild clean archive \
+    #       -workspace ${{ inputs.project-name }}.xcworkspace \
+    #       -scheme ${{ inputs.project-name }} \
+    #       -configuration "Release" \
+    #       -sdk iphoneos \
+    #       -archivePath "$PWD/build/${{ inputs.project-name }}.xcarchive" \
+    #       -destination "generic/platform=iOS,name=Any iOS Device" \
+    #       -allowProvisioningUpdates \
+    #       CODE_SIGN_STYLE=Automatic \
+    #       CODE_SIGNING_ALLOWED=NO \
+    #       CODE_SIGN_IDENTITY="iOS Distribution" \
+    #       DEVELOPMENT_TEAM="${{ inputs.team-id }}"
 
-    - name: Verify Provisioning Profiles
-      shell: bash
-      run: |
-        ls -la ~/Library/MobileDevice/Provisioning\ Profiles/
+    # - name: Verify Provisioning Profiles
+    #   shell: bash
+    #   run: |
+    #     ls -la ~/Library/MobileDevice/Provisioning\ Profiles/
        
 
-    - name: Export .ipa
+    # - name: Export .ipa
+    #   shell: bash
+    #   run: |
+    #     set -eo pipefail
+    #     xcodebuild -archivePath "$PWD/build/${{ inputs.project-name }}.xcarchive" \
+    #       -exportOptionsPlist exportOptions.plist \
+    #       -exportPath $PWD/build \
+    #       -allowProvisioningUpdates \
+    #       CODE_SIGN_STYLE=Automatic \
+    #       CODE_SIGNING_ALLOWED=NO \
+    #       DEVELOPMENT_TEAM="${{ inputs.team-id }}" \
+    #       -exportArchive
+
+    - name: Fastlane Build and Export
       shell: bash
+      env:
+        MATCH_APP_IDENTIFIER: "com.slakkedisstudio.rangerquest"
+        MATCH_TYPE: "adhoc" # Since your profile is for ad hoc distribution
+        TEAM_ID: "${{ inputs.team-id }}"
       run: |
-        set -eo pipefail
-        xcodebuild -archivePath "$PWD/build/${{ inputs.project-name }}.xcarchive" \
-          -exportOptionsPlist exportOptions.plist \
-          -exportPath $PWD/build \
-          -allowProvisioningUpdates \
-          CODE_SIGN_STYLE=Automatic \
-          CODE_SIGNING_ALLOWED=NO \
-          DEVELOPMENT_TEAM="${{ inputs.team-id }}" \
-          -exportArchive
+        fastlane run match app_identifier:"$MATCH_APP_IDENTIFIER" type:"$MATCH_TYPE" readonly:true --verbose
+        fastlane build_and_export
 
     - name: Publish the App on TestFlight
       shell: bash

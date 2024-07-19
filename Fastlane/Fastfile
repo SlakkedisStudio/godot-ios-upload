@@ -1,0 +1,15 @@
+desc "Build the app and export .ipa"
+lane :build_and_export do
+  gym(
+    scheme: "RangerQuest", # Confirm this matches your Xcode scheme exactly
+    export_method: "ad-hoc", # Matches the provisioning profile type
+    export_options: {
+      provisioningProfiles: { 
+        "com.slakkedisstudio.rangerquest": "Ranger Quest Provision Profile"
+      }
+    },
+    output_directory: "./build", # Destination directory for the IPA file
+    clean: true, # Cleans the project before building
+    archive_path: "./build/RangerQuest.xcarchive" # Path for the created .xcarchive file
+  )
+end
