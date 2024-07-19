@@ -104,6 +104,7 @@ runs:
           -destination "generic/platform=iOS,name=Any iOS Device" \
           -allowProvisioningUpdates \
           CODE_SIGN_STYLE=Automatic \
+          CODE_SIGNING_ALLOWED=NO \
           CODE_SIGN_IDENTITY="iOS Distribution" \
           DEVELOPMENT_TEAM="${{ inputs.team-id }}"
 
@@ -122,6 +123,7 @@ runs:
           -exportPath $PWD/build \
           -allowProvisioningUpdates \
           CODE_SIGN_STYLE=Automatic \
+          CODE_SIGNING_ALLOWED=NO \
           DEVELOPMENT_TEAM="${{ inputs.team-id }}" \
           -exportArchive
 
