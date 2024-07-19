@@ -17,8 +17,8 @@ inputs:
   project-name:
     description: 'Project name used for xarchive building'
     required: true
-  provision-profile-path:
-    description: 'Path of a valid provision profile file'
+  provision-profile-uuid:
+    description: 'The uuid of the provisioning profile'
     required: true
   apple-id-password:
     description: 'Apple ID password'
@@ -55,6 +55,10 @@ runs:
           -u ${{ inputs.apple-id-username }} \
           -p ${{ inputs.apple-id-password }}
 
+    # - name: Install Fastlane
+    #   shell: bash
+    #   run: gem install fastlane -NV
+
     - name: Download and configure Godot Engine linux server and templates
       shell: bash
       if: steps.cache-godot.outputs.cache-hit != 'true'
@@ -70,9 +74,7 @@ runs:
       shell: bash
       run: ./Godot.app/Contents/MacOS/Godot --headless --path ${{ inputs.working-directory }} --export-release iOS
 
-    - name: Extract Provisioning profile UUID and create PP_UUID env variable
-      shell: bash
-      run: echo "PP_UUID=$(grep -a -A 1 'UUID' ${{ inputs.provision-profile-path }} | grep string | sed -e "s|<string>||" -e "s|</string>||" | tr -d '\t')" >> $GITHUB_ENV
+   
 
     - name: Verify Provisioning Profile Placement and UUID
       shell: bash
